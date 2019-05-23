@@ -20,8 +20,9 @@ public class IndexController extends AbstractController{
     private JdbcTemplate jdbcTemplate;
 
     @RequestMapping("/test1")
-    public List<Map<String,Object>> testIndex(){
-        return jdbcTemplate.queryForList("SELECT * FROM account_flow LIMIT 10");
+    public List<Map<String,Object>> testIndex() throws Exception{
+        throw new IllegalAccessException("test illegal");
+//        return jdbcTemplate.queryForList("SELECT * FROM account_flow LIMIT 10");
     }
 
 
