@@ -9,9 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 @RunWith(SpringRunner.class)
@@ -23,11 +20,18 @@ public class SpringTest {
 
     @Test
     public void test() throws IOException {
-        Map<String,Object> order =new HashMap<>();
-        order.put("orderNo","201907240301");
-        order.put("created",new Date());
-        order.put("amount", BigDecimal.ONE);
-        order.put("_id",order.get("orderNo"));
-        elasticSearchService.save("buydeem","order",order);
+//        Map<String,Object> order =new HashMap<>();
+//        order.put("orderNo","201907240301");
+//        order.put("created",new Date());
+//        order.put("amount", BigDecimal.ONE);
+//        order.put("_id",order.get("orderNo"));
+//        elasticSearchService.save("buydeem","order",order);
+
+        try {
+            Map<String, Object> map = elasticSearchService.getById("buydeem", "order", "201907240301","","");
+            System.out.println(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
