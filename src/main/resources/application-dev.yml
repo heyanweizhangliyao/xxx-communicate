@@ -72,3 +72,8 @@ dubbo:
     retries: 0
     # 超时时间
     timeout: 3000
+spring:
+  data:
+    elasticsearch:
+      cluster-name: my-application
+      cluster-nodes: http://127.0.0.1:9200
