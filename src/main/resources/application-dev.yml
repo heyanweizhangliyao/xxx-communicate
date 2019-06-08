@@ -36,7 +36,21 @@ spring:
           prepStmtCacheSqlLimit: 2048
           cachePrepStmts: true
           useServerPrepStmts: true
-
+# kafka配置
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 16384
+      buffer-memory: 33554432
+      acks: 1
+      retries: 1
+#elasticsearch配置
+  data:
+      elasticsearch:
+        cluster-name: my-application
+        cluster-nodes: http://127.0.0.1:9200
 
 
 #配置mybatis
@@ -46,7 +60,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
     use-generated-keys: true
-
+#dubbo配置
 dubbo:
   application:
     name: dubbo-demo-service
@@ -72,8 +86,5 @@ dubbo:
     retries: 0
     # 超时时间
     timeout: 3000
-spring:
-  data:
-    elasticsearch:
-      cluster-name: my-application
-      cluster-nodes: http://127.0.0.1:9200
+
+
