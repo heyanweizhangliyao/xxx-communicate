@@ -3,8 +3,9 @@ package com.study.demo.hbase;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.*;
 import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.util.Bytes;
-import org.mortbay.util.ajax.JSON;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 
@@ -33,13 +34,13 @@ public class HBaseDemo {
           /*  String[] cols = {"information","contact"};
             createTable("sys_user",cols);*/
 //            deleteTable("sys_user");
-  /*          SysUser sysUser = new SysUser("abcd","zhangsan",23,"17689085643");
-            sysUser.setEmail("test@163.com");
-            sysUser.setQQ("639238672");
+          /*  SysUser sysUser = new SysUser("11","lisi",45,"10086");
+            sysUser.setEmail("test1@163.com");
+            sysUser.setQQ("098786738");
             insertSysUser(sysUser);*/
-//            getNoDealData("sys_user");
-            SysUser abcd = getById("abcd");
-            System.out.println(JSON.toString(abcd));
+            getNoDealData("sys_user");
+           /* SysUser abcd = getById("abcd","","");
+            System.out.println(JSON.toString(abcd));*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -81,6 +82,7 @@ public class HBaseDemo {
             //参数：1.列族名  2.列名  3.值
             put.addColumn("information".getBytes(),"NAME".getBytes(),sysUser.getName().getBytes());
             put.addColumn("information".getBytes(),"AGE".getBytes(),(sysUser.getAge()+"").getBytes());
+            put.addColumn("information".getBytes(),"phone".getBytes(),(sysUser.getPhone()).getBytes());
             put.addColumn("contact".getBytes(), "email".getBytes(), sysUser.getQQ().getBytes());
             put.addColumn("contact".getBytes(), "qq".getBytes(), sysUser.getEmail().getBytes());
             table.put(put);
@@ -115,9 +117,13 @@ public class HBaseDemo {
         try {
             Table table= initHbase().getTable(TableName.valueOf(tableName));
             Scan scan = new Scan();
+
+//            Filter filter;
+//            scan.setFilter(filter);
+//            scan.setLimit(1);
             ResultScanner resutScanner = table.getScanner(scan);
             for(Result result: resutScanner){
-                System.out.println("scan:  " + result);
+                System.out.println("scan:  " + new String(result.getValue("information".getBytes(),"NAME".getBytes())));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -129,11 +135,17 @@ public class HBaseDemo {
      * @param id
      * @return
      */
-    public static SysUser getById(String id){
+    public static SysUser getById(String id,String family,String qualifier){
         TableName tableName = TableName.valueOf("sys_user");
         try {
             Table table = connection.getTable(tableName);
             Get get = new Get(id.getBytes());
+            if(StringUtils.hasText(family)){
+                get.addFamily(family.getBytes());
+                if(StringUtils.hasText(qualifier)){
+                    get.addColumn(family.getBytes(),qualifier.getBytes());
+                }
+            }
             SysUser sysUser = new SysUser();
             sysUser.setId(id);
             if(!get.isCheckExistenceOnly()){//确保数据存在
