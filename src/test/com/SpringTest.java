@@ -3,19 +3,16 @@ package com;
 import com.study.demo.DemoApplication;
 import com.study.demo.config.ElasticSearchService;
 import org.apache.dubbo.common.json.JSON;
-import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.Message;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.UUID;
 
 @RunWith(SpringRunner.class)
