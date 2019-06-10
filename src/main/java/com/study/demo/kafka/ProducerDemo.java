@@ -23,6 +23,7 @@ public class ProducerDemo {
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         Producer<String, String> producer = new KafkaProducer<>(props);
+        //Producer将消息发布到指定的Topic中,同时Producer也能决定将此消息归属于哪个partition;比如基于"round-robin"方式或者通过其他的一些算法等.
         for(int i = 0; i < 100; i++)
             producer.send(new ProducerRecord<String, String>("test", Integer.toString(i), UUID.randomUUID().toString()), new Callback() {
                 @Override

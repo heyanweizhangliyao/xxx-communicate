@@ -11,10 +11,9 @@ public class IndexController extends AbstractController{
         return "welcome to heyanwei-thinkpad";
     }
 
-
-    @RequestMapping("/sayhi")
-    public Object sayHi(String name){
-        return null;}
-
-
+    /**
+     * 不能在同个项目中使用
+     */
+//    @Reference(version="1.0.0")
+//    private SysUserService sysUserService;
 }

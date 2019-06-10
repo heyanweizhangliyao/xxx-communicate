@@ -2,6 +2,65 @@ server:
   port: 80
   servlet:
     path: /heyanwei
+
+spring:
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 761563491
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    hikari:
+      maximum-pool-size: 20
+      max-lifetime: 30000
+      idle-timeout: 30000
+      data-source-properties:
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        cachePrepStmts: true
+        useServerPrepStmts: true
+    slave:
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+      username: root
+      password: 761563491
+      type: com.zaxxer.hikari.HikariDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      hikari:
+        maximum-pool-size: 20
+        max-lifetime: 30000
+        idle-timeout: 30000
+        data-source-properties:
+          prepStmtCacheSize: 250
+          prepStmtCacheSqlLimit: 2048
+          cachePrepStmts: true
+          useServerPrepStmts: true
+# kafka配置
+  kafka:
+    producer:
+      bootstrap-servers: 127.0.0.1:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      batch-size: 16384
+      buffer-memory: 33554432
+      acks: 1
+      retries: 1
+#elasticsearch配置
+  data:
+      elasticsearch:
+        cluster-name: my-application
+        cluster-nodes: http://127.0.0.1:9200
+
+
+#配置mybatis
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.study.demo.model
+  configuration:
+    map-underscore-to-camel-case: true
+    use-generated-keys: true
+#dubbo配置
 dubbo:
   application:
     name: dubbo-demo-service
@@ -27,8 +86,5 @@ dubbo:
     retries: 0
     # 超时时间
     timeout: 3000
-spring:
-  data:
-    elasticsearch:
-      cluster-name: my-application
-      cluster-nodes: http://127.0.0.1:9200
+
+
