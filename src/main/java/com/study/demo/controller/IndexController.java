@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/index")
 public class IndexController extends AbstractController{
 
+    @RequestMapping("/test")
     public String index(){
         return "welcome to heyanwei-thinkpad";
     }
