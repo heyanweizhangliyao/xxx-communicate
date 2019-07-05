@@ -83,7 +83,8 @@ public class AlgorithmImpl {
          时间复杂度：O(n)，索引 j将会迭代 n 次。  空间复杂度（Table）：O(m)，m 是字符集的大小。
          */
         int n = s.length(), ans = 0;
-        int[] index = new int[128]; // current index of character
+        int m = 128;
+        int[] index = new int[m]; // current index of character
         // try to extend the range [i, j]
         for (int j = 0, i = 0; j < n; j++) {
             i = Math.max(index[s.charAt(j)], i);
@@ -170,8 +171,8 @@ public class AlgorithmImpl {
         int longestPalindrome = 1;
         String longestPalindromeStr = s.substring(0, 1);
         for (int i = 0; i < len; i++) {
-            String palindromeOdd = centerSpread(s, len, i, i);
-            String palindromeEven = centerSpread(s, len, i, i + 1);
+            String palindromeOdd = centerSpread(s, len, i, i);//奇数情况
+            String palindromeEven = centerSpread(s, len, i, i + 1);//偶数情况
             String maxLen = palindromeOdd.length() > palindromeEven.length() ? palindromeOdd : palindromeEven;
             if (maxLen.length() > longestPalindrome) {
                 longestPalindrome = maxLen.length();
@@ -181,6 +182,14 @@ public class AlgorithmImpl {
         return longestPalindromeStr;
     }
 
+    /**
+     * 中心扩散
+     * @param s
+     * @param len
+     * @param left
+     * @param right
+     * @return
+     */
     private static String centerSpread(String s, int len, int left, int right) {
         int l = left;
         int r = right;
@@ -208,6 +217,8 @@ public class AlgorithmImpl {
         System.out.println();*/
 
         System.out.println(findMedianSortedArrays(new int[]{12,32,45,56,78},new int[]{1,2,3,900}));
+
+        System.out.println(longestPalindrome("mcbagabf"));
 
     }
 
