@@ -203,6 +203,90 @@ public class AlgorithmImpl {
     }
 
 
+    /**
+     *
+      * @param x
+     * 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+
+    示例 1:
+
+    输入: 123
+    输出: 321
+     示例 2:
+
+    输入: -123
+    输出: -321
+    示例 3:
+
+    输入: 120
+    输出: 21
+    注意:
+    假设我们的环境只能存储得下 32 位的有符号整数，则其数值范围为 [−231,  231 − 1]。请根据这个假设，如果反转后整数溢出那么就返回 0。
+
+     * @return
+     */
+    public static int inverse(int x) {
+        int rs = 0;
+        while (x != 0){
+            int pop = x % 10;
+            x /= 10;
+            /**
+             * rs *10 + pop可能会溢出，条件为rs*10+pop > Integer.MAX_VALUE 或者 rs*10+pop < Integer.MIN_VALUE
+             */
+            if(rs > (Integer.MAX_VALUE-Math.abs(pop))/10 || rs < (Integer.MIN_VALUE+Math.abs(pop))/10 ){
+                return 0;
+            }
+            rs = rs *10 + pop;
+        }
+        return rs;
+    }
+
+
+    /**
+     * 判断数字是不是回文数字
+     * @param x
+     *
+     * 只需要返回数字的一半长度
+     *
+     * @return
+     */
+    public static boolean isPalindrome(int x){
+        //先处理特殊情况
+        if(x < 0 || (x%10==0 && x!= 0)){
+            return false;
+        }
+
+        int revertNum = 0;
+        while (x > revertNum){
+            revertNum = revertNum*10+x%10;
+            x /= 10;
+        }
+        //数字长度可能 是奇数也可能是偶数，比如 12321  1331
+        //如果是12321 则revertNum=123,x=12 如果是1331 则revertNum=12 x=12
+        return x == revertNum || x == revertNum/10;
+    }
+
+    /**
+     * 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
+
+     '.' 匹配任意单个字符
+     '*' 匹配零个或多个前面的那一个元素
+     所谓匹配，是要涵盖 整个 字符串 s的，而不是部分字符串。
+
+     说明:
+
+     s 可能为空，且只包含从 a-z 的小写字母。
+     p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 *。
+
+     * @param s
+     * @param p
+     * @return
+     */
+    public static boolean isMatch(String s, String p) {
+
+        return false;
+    }
+
     public static void main(String[] args) {
  /*       List<Integer> reapete = findReapete(new int[]{2, 3, 2, 4, 5, 4, 6, 7, 8});
         System.out.println(reapete);
@@ -215,10 +299,14 @@ public class AlgorithmImpl {
             a[i] = i;
         }
         System.out.println();*/
+//
+//        System.out.println(findMedianSortedArrays(new int[]{12,32,45,56,78},new int[]{1,2,3,900}));
+//
+//        System.out.println(longestPalindrome("mcbagabf"));
+//
+//        System.out.println(inverse(123));
 
-        System.out.println(findMedianSortedArrays(new int[]{12,32,45,56,78},new int[]{1,2,3,900}));
-
-        System.out.println(longestPalindrome("mcbagabf"));
+        System.out.println(Integer.parseInt("-91283472332"));
 
     }
 
