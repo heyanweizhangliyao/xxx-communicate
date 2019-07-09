@@ -1,9 +1,8 @@
 package com.study.demo.algorithm;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import org.springframework.util.StringUtils;
+
+import java.util.*;
 
 /**
  * Created by heyanwei-thinkpad on 2019/7/2.
@@ -287,6 +286,108 @@ public class AlgorithmImpl {
         return false;
     }
 
+
+
+   /* 给定 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+
+    说明：你不能倾斜容器，且 n 的值至少为 2。
+    */
+   public static int maxArea(int[] height){
+       int maxArea = 0;
+       int l = 0;
+       int r = height.length-1;
+       while(l<r){
+           maxArea = Math.max(maxArea,(r-l)*Math.min(height[l],height[r]));
+           if(height[l] > height[r]){
+               r--;
+           }else{
+               l++;
+           }
+       }
+       //双指针法
+       return maxArea;
+   }
+
+
+    /**
+     * 给定一个整数，将其转为罗马数字。输入确保在 1 到 3999 的范围内。
+     * @param i
+     */
+
+    public static String integerToRoman(int i){
+
+        return "";
+    }
+
+
+    /**
+     *
+     * @param s
+     * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+
+    有效字符串需满足：
+
+    左括号必须用相同类型的右括号闭合。
+    左括号必须以正确的顺序闭合。
+    注意空字符串可被认为是有效字符串。
+     * @return
+     */
+    public static boolean validExpression(String s){
+        //采用栈的数据结构
+        Stack<Character> stack = new Stack<>();
+        if(StringUtils.isEmpty(s)){
+            return true;
+        }
+        for (char c : s.toCharArray()) {
+            if(stack.isEmpty()){
+                stack.push(c);
+            }else {
+                Character oldC = stack.pop();
+                if( (oldC == '(' && c == ')') || (oldC == '[' && c == ']') || (oldC == '{' && c == '}')){
+                    continue;
+                }
+                stack.push(oldC);
+                stack.push(c);
+            }
+
+        }
+        return stack.isEmpty();
+
+    }
+
+    /**
+     * 合并两个有序链表
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public static ListNode mergeListNode(ListNode l1,ListNode l2){
+        ListNode prev = new ListNode(Integer.MIN_VALUE);
+        ListNode rs = prev;
+        while (l1 != null && l2 != null){
+            if(l1.val > l2.val){
+                prev.next = l2;
+                l2 = l2.next;
+            }else if(l1.val < l2.val){
+                prev.next = l1;
+                l1 = l1.next;
+            }else{
+                prev.next = l2;
+                l2 = l2.next;
+                prev = prev.next;
+                prev.next = l1;
+                l1 = l1.next;
+            }
+            prev = prev.next;
+        }
+        // exactly one of l1 and l2 can be non-null at this point, so connect
+        // the non-null list to the end of the merged list.
+        prev.next = l1 == null ? l2 : l1;
+
+        return rs.next;
+    }
+
+
     public static void main(String[] args) {
  /*       List<Integer> reapete = findReapete(new int[]{2, 3, 2, 4, 5, 4, 6, 7, 8});
         System.out.println(reapete);
@@ -306,8 +407,19 @@ public class AlgorithmImpl {
 //
 //        System.out.println(inverse(123));
 
-        System.out.println(Integer.parseInt("-91283472332"));
+//        System.out.println(maxArea(new int[]{2,3,4,5,18,17,6}));
 
+        ListNode l1 = new ListNode(1);l1.next = new ListNode(3);l1.next.next = new ListNode(4);
+        ListNode l2 = new ListNode(1);l2.next = new ListNode(2);l2.next.next = new ListNode(4);
+        ListNode listNode = mergeListNode(l1, l2);
+
+        System.out.println();
     }
 
+}
+
+class ListNode {
+     public int val;
+    public ListNode next;
+    public ListNode(int x) { val = x; }
 }
