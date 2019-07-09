@@ -18,6 +18,8 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import org.apache.log4j.Logger;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -39,7 +41,7 @@ public class WebSocketNettyServer {
             bootstrap.childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
                 protected void initChannel(NioSocketChannel ch) throws Exception {
-                    ch.pipeline().addLast("logging",new LoggingHandler("DEBUG"));//设置log监听器，并且日志级别为debug，方便观察运行流程
+                    ch.pipeline().addLast("logging",new LoggingHandler("INFO"));//设置log监听器，并且日志级别为debug，方便观察运行流程
                     ch.pipeline().addLast("http-codec",new HttpServerCodec());//设置解码器
                     ch.pipeline().addLast("aggregator",new HttpObjectAggregator(65536));//聚合器，使用websocket会用到
                     ch.pipeline().addLast("http-chunked",new ChunkedWriteHandler());//用于大数据的分区传输
@@ -69,12 +71,37 @@ class NioWebSocketHandler extends SimpleChannelInboundHandler<Object> {
     private final Logger logger=Logger.getLogger(getClass());
 
     private WebSocketServerHandshaker handshaker;
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        //添加连接
+        logger.debug("客户端加入连接："+ctx.channel());
+        ChannelSupervise.addChannel(ctx.channel());
+    }
+
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        //断开连接
+        logger.debug("客户端断开连接："+ctx.channel());
+        ChannelSupervise.removeChannel(ctx.channel());
+    }
+
+
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
         logger.debug("收到消息："+msg);
         if (msg instanceof FullHttpRequest){
             //以http请求形式接入，但是走的是websocket
             handleHttpRequest(ctx, (FullHttpRequest) msg);
+            Timer timer = new Timer();
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    TextWebSocketFrame tws = new TextWebSocketFrame(new Date().toString()+":"
+                            + ctx.channel().id());
+                    ctx.channel().writeAndFlush(tws);
+                }
+            },2000L,2000L);
         }else if (msg instanceof WebSocketFrame){
             //处理websocket客户端的消息
             handlerWebSocketFrame(ctx, (WebSocketFrame) msg);
