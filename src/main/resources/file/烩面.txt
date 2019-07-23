@@ -1,0 +1,7 @@
+换行三种方式处理的不同
+CRLF->Windows-style
+LF->Unix Style
+CR->Mac Style
+
+http header分割符  头key和value之间用 :+空格 (注意+号不算)隔开，每一对keyvalue之间用CRLF（换行符）隔开。
+最后一对keyvalue与httpbody之间有两个CRLF
