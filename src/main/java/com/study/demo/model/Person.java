@@ -29,4 +29,13 @@ public class Person implements Serializable {
                 ", addr='" + addr + '\'' +
                 '}';
     }
+
+    public Person(String name, String addr) {
+        this.name = name;
+        this.addr = addr;
+    }
+
+    public Person() {
+
+    }
 }
